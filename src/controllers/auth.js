@@ -27,6 +27,7 @@ const register = async (req, res, next) => {
           email,
           password: hash,
           status: "unactived",
+          role: 'user',
           createdAt: datetime,
           updatedAt: datetime
         }
@@ -100,7 +101,7 @@ const login = async (req, res, next) => {
           email: user.email,
           phone: user.phone,
           avatar: user.avatar,
-          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 2
+          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30
         }
   
         const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET)
