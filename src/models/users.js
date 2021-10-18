@@ -60,11 +60,22 @@ const getUserProfile = (id) => new Promise((resolve, reject) => {
   })
 })
 
+const updateRole = (id, newRole) => new Promise((resolve, reject) => {
+  conn.query(`UPDATE users SET role = '${newRole}' WHERE id = '${id}'`, (error, result) =>{
+    if (!error) {
+      resolve(result)
+    } else {
+      reject(error)
+    }
+  })
+})
+
 module.exports = {
   getUser,
   updatePhoneUser,
   getUserProfile,
   updateUsernameUser,
   updateBioUser,
-  updateAvatarUser
+  updateAvatarUser,
+  updateRole
 }

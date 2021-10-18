@@ -12,5 +12,6 @@ router
   .patch("/avatar", auth, userControllers.updateAvatarUser)
   .get("/user", auth, userControllers.getUserProfile)
   .get("/user/:id", auth, userControllers.getUserById)
+  .patch("/role/:id", auth, userControllers.updateRoleUser)
 
 module.exports = router;

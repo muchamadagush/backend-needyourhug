@@ -100,6 +100,7 @@ const login = async (req, res, next) => {
           name: user.name,
           email: user.email,
           phone: user.phone,
+          role: user.role,
           avatar: user.avatar,
           exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30
         }

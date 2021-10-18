@@ -142,6 +142,27 @@ const getUserProfile = async (req, res, next) => {
   }
 }
 
+const updateRoleUser = async (req, res, next) => {
+  try {
+    const { role } = req.user
+    const { id } = req.params
+
+    if (role !== 'admin') return res.status(400).send('Bad request');
+
+    const newRole = req.body.role
+    console.log(newRole)
+
+    await userModels.updateRole(id, newRole)
+
+    res.status(200);
+    res.json({
+      message: 'Successfully update role user!'
+    });
+  } catch (error) {
+    next(new Error(error.message))
+  }
+}
+
 module.exports = {
   getUser,
   updatePhoneUser,
@@ -149,5 +170,6 @@ module.exports = {
   updateUsernameUser,
   updateBioUser,
   updateAvatarUser,
-  getUserById
+  getUserById,
+  updateRoleUser
 }
