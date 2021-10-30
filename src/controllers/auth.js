@@ -6,12 +6,13 @@ const verification = require('../helpers/common')
 
 const register = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body
+    const { name, email, password, role } = req.body
 
     if (!name) return res.status(400).send({ message: "username cannot be null" });
     if (!email) return res.status(400).send({ message: "email cannot be null" });
     if (!password) return res.status(400).send({ message: "password cannot be null" });
-  
+    if (!role) return res.status(400).send({ message: "role cannot be null" });
+
     const user = await authModels.findUser(email)
     if (user.length > 0) return res.status(400).send({ message: "email already exists" });
 
@@ -20,14 +21,19 @@ const register = async (req, res, next) => {
         const date = new Date();
         const datetime = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()
 
+        let status = 'unactived'
+        if (role === 'psikolog') {
+          status = 'actived'
+        }
+
         const data = {
           id: uuid().split("-").join(""),
           name,
           username: `@${name.toLowerCase()}`,
           email,
           password: hash,
-          status: "unactived",
-          role: 'user',
+          status,
+          role,
           createdAt: datetime,
           updatedAt: datetime
         }
@@ -35,12 +41,14 @@ const register = async (req, res, next) => {
         authModels.register(data)
         delete data.password
 
-        const payload = {
-          name,
-          email,
+        if (role !== 'psikolog') { 
+          const payload = {
+            name,
+            email,
+          }
+          const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET)
+          verification.sendEmail(email, name, token)
         }
-        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET)
-        verification.sendEmail(email, name, token)
 
         res.status(201);
          res.json({

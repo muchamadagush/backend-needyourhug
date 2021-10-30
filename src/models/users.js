@@ -70,6 +70,36 @@ const updateRole = (id, newRole) => new Promise((resolve, reject) => {
   })
 })
 
+const getPsikolog = () => new Promise((resolve, reject) => {
+  conn.query(`SELECT * FROM users WHERE role = 'psikolog' ORDER BY users.name ASC`, (error, result) => {
+    if (!error) {
+      resolve(result)
+    } else {
+      reject(error)
+    }
+  })
+})
+
+const deletePsikolog = (id) => new Promise((resolve, reject) => {
+  conn.query(`DELETE FROM users WHERE id = '${id}'`, (error, result) => {
+    if (!error) {
+      resolve(result)
+    } else {
+      reject(error)
+    }
+  })
+})
+
+const getUSerByRole = (role) => new Promise((resolve, reject) => {
+  conn.query(`SELECT * FROM users WHERE role != '${role}' AND role != 'admin'`, (error, result) => {
+    if (!error) {
+      resolve(result)
+    } else {
+      reject(error)
+    }
+  })
+})
+
 module.exports = {
   getUser,
   updatePhoneUser,
@@ -77,5 +107,8 @@ module.exports = {
   updateUsernameUser,
   updateBioUser,
   updateAvatarUser,
-  updateRole
+  updateRole,
+  getPsikolog,
+  deletePsikolog,
+  getUSerByRole
 }

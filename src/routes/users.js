@@ -13,5 +13,8 @@ router
   .get("/user", auth, userControllers.getUserProfile)
   .get("/user/:id", auth, userControllers.getUserById)
   .patch("/role/:id", auth, userControllers.updateRoleUser)
+  .get("/psikolog", auth, userControllers.getPsikolog)
+  .delete("/psikolog/:id", auth, userControllers.deletePsikolog)
+  .get("/users/:role", auth, userControllers.getUSerByRole)
 
 module.exports = router;

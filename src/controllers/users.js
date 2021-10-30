@@ -163,6 +163,56 @@ const updateRoleUser = async (req, res, next) => {
   }
 }
 
+const getPsikolog = async (req, res, next) => {
+  try {
+    const { role } = req.user
+
+    if (role !== 'admin') return res.status(400).send("You don't have access");
+
+    const psikolog = await userModels.getPsikolog()
+
+    res.status(200);
+    res.json({
+      psikolog
+    });
+  } catch (error) {
+    next(new Error(error.message))
+  }
+}
+
+const deletePsikolog = async (req, res, next) => {
+  try {
+    const { role } = req.user
+    const { id } = req.params
+
+    if (role !== 'admin') return res.status(400).send("You don't have access");
+    
+    await userModels.deletePsikolog(id)
+
+    res.status(200);
+    res.json({
+      message: "Successfully delete psikolog!"
+    });
+  } catch (error) {
+    next(new Error(error.message))
+  }
+}
+
+const getUSerByRole = async (req, res, next) => {
+  try {
+    const { role } = req.params
+
+    const users = await userModels.getUSerByRole(role)
+
+    res.status(200);
+    res.json({
+      users
+    });
+  } catch (error) {
+    next(new Error(error.message))
+  }
+}
+
 module.exports = {
   getUser,
   updatePhoneUser,
@@ -171,5 +221,8 @@ module.exports = {
   updateBioUser,
   updateAvatarUser,
   getUserById,
-  updateRoleUser
+  updateRoleUser,
+  getPsikolog,
+  deletePsikolog,
+  getUSerByRole
 }
