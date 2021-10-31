@@ -201,12 +201,38 @@ const deletePsikolog = async (req, res, next) => {
 const getUSerByRole = async (req, res, next) => {
   try {
     const { role } = req.params
+    const { page, perPage, search } = req.query;
 
-    const users = await userModels.getUSerByRole(role)
+    const users = await userModels.getUSerByRole(role, search)
 
     res.status(200);
     res.json({
       users
+    });
+  } catch (error) {
+    next(new Error(error.message))
+  }
+}
+
+const updatePsikolog = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const { name, username, phone, bio, role, avatar } = req.body
+
+    const data = {
+      name,
+      username,
+      phone,
+      bio,
+      role,
+      avatar,
+    }
+
+    await userModels.updatePsikolog(id, data)
+
+    res.status(200);
+    res.json({
+      message: 'Successfully update psikolog!'
     });
   } catch (error) {
     next(new Error(error.message))
@@ -224,5 +250,6 @@ module.exports = {
   updateRoleUser,
   getPsikolog,
   deletePsikolog,
-  getUSerByRole
+  getUSerByRole,
+  updatePsikolog
 }

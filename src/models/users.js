@@ -90,8 +90,8 @@ const deletePsikolog = (id) => new Promise((resolve, reject) => {
   })
 })
 
-const getUSerByRole = (role) => new Promise((resolve, reject) => {
-  conn.query(`SELECT * FROM users WHERE role != '${role}' AND role != 'admin'`, (error, result) => {
+const getUSerByRole = (role, search) => new Promise((resolve, reject) => {
+  conn.query(`SELECT * FROM users WHERE role != '${role}' AND role != 'admin' AND users.name LIKE '%${search}%'`, (error, result) => {
     if (!error) {
       resolve(result)
     } else {
@@ -99,6 +99,8 @@ const getUSerByRole = (role) => new Promise((resolve, reject) => {
     }
   })
 })
+
+
 
 module.exports = {
   getUser,
